@@ -1,19 +1,34 @@
 import './App.css';
 import {sampleText} from './sampleText';
 import { Component } from 'react';
-
+import { marked, Marked } from 'marked';
 class App extends Component {
+  state = { 
+    text: sampleText
+   }
+
+    handleChange = (event) => {
+      const text = event.target.value
+      this.setState({text})
+    }
+
+    renderText = text => {
+      const __html =  marked(text, {sanitize: true})
+      return {__html}
+    }
   render() {
     return (
       <div className='container'>
         <div className='row'>
           <div className='col-sm-6'>
-            <textarea value={sampleText} 
+            <textarea
+            onChange={this.handleChange}
+            value={this.state.text} 
             className='form-control' rows='35'>
             </textarea>
           </div>
           <div className='col-sm-6'>
-        <div>{sampleText}</div>
+        <div dangerouslySetInnerHTML={this.renderText(this.state.text)} />
         </div>
       </div>
     </div>
